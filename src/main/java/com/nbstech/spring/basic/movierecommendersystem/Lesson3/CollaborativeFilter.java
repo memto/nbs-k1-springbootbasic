@@ -1,5 +1,10 @@
 package com.nbstech.spring.basic.movierecommendersystem.Lesson3;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+
+@Component
+//@Primary
 public class CollaborativeFilter implements MovieFilter {
     public String[] getRecommendations(String movie) {
 
