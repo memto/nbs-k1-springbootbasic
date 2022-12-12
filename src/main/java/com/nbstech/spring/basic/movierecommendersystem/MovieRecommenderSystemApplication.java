@@ -1,14 +1,9 @@
 package com.nbstech.spring.basic.movierecommendersystem;
 
-import com.nbstech.spring.basic.movierecommendersystem.Lesson3.CollaborativeFilter;
-import com.nbstech.spring.basic.movierecommendersystem.Lesson3.MovieRecommender;
-import com.nbstech.spring.basic.movierecommendersystem.Lesson3.ContentBasedFilter;
-//import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.nbstech.spring.basic.movierecommendersystem.XMLAppConfig.MovieRecommender;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Arrays;
 
@@ -18,21 +13,42 @@ import java.util.Arrays;
 public class MovieRecommenderSystemApplication {
 
 	public static void main(String[] args) {
-		// SpringApplication.run(MovieRecommenderSystemApplication.class, args);
 
-		// ApplicationContext manages the beans and dependencies
+		//== SPB way: ApplicationContext manages the beans and dependencies
 //		ApplicationContext appContext = SpringApplication.run(MovieRecommenderSystemApplication.class, args);
 
-		AnnotationConfigApplicationContext appContext =
-				new AnnotationConfigApplicationContext(MovieRecommenderSystemApplication.class);
+		//== Spring way: ApplicationContext manages the beans and dependencies
+//		AnnotationConfigApplicationContext appContext =
+//				new AnnotationConfigApplicationContext(MovieRecommenderSystemApplication.class);
 
-		//use ApplicationContext to find which filter is being used
-		MovieRecommender recommender = appContext.getBean(MovieRecommender.class);
+
+//		//use ApplicationContext to find which filter is being used
+//		MovieRecommender recommender = appContext.getBean(MovieRecommender.class);
+//
+//		//call method to get recommendations
+//		String[] result = recommender.recommendMovies("Finding Dory");
+//
+//		//display results
+//		System.out.println(Arrays.toString(result));
+//
+//		appContext.close();
+
+
+		//== XML App Config: load the configuration file
+		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("appContext.xml");
+
+		//check the beans which have been loaded
+		System.out.println("\nBeans loaded:");
+		System.out.println(Arrays.toString(appContext.getBeanDefinitionNames()));
+
+		//retrieve bean from the application context
+		MovieRecommender movieRecommender = appContext.getBean("movieRecommender", MovieRecommender.class);
 
 		//call method to get recommendations
-		String[] result = recommender.recommendMovies("Finding Dory");
+		String[] result = movieRecommender.recommendMovies("Finding Dory");
 
 		//display results
+		System.out.println();
 		System.out.println(Arrays.toString(result));
 
 		appContext.close();
